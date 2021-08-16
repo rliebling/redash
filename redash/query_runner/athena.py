@@ -161,6 +161,11 @@ class Athena(BaseQueryRunner):
                 "aws_session_token": creds["Credentials"]["SessionToken"],
                 "region_name": self.configuration["region"],
             }
+        elif self.configuration.get("aws_access_key", None) in [ None, ""]:
+             # assumes boto3 will get keys from instance metadata
+             return {
+                "region_name": self.configuration["region"]
+            }
         else:
             return {
                 "aws_access_key_id": self.configuration.get("aws_access_key", None),
